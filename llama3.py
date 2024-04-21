@@ -1,26 +1,17 @@
 from huggingface_hub import login, snapshot_download
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
-import os
 import time
 
 TOKEN_TXT = "hf_token.txt"
 MODEL_ID = "meta-llama/Meta-Llama-3-8B-Instruct"
 LOCAL_PATH ="model"
-HF_HOME = r"D:/Users/Kazu/Documents/Project/llama3/.cache/huggingface"
 
 def hf_login():
     token = ''
     with open(TOKEN_TXT, 'r') as f:
         token = f.read()
     login(token=token)
-
-def download_model():
-    download_path = snapshot_download(repo_id=MODEL_ID,
-                                  local_dir=LOCAL_PATH,
-                                  local_dir_use_symlinks=False)
-    print(download_path)
-
 
 def get_tokenizer():
     return AutoTokenizer.from_pretrained(MODEL_ID)
@@ -34,11 +25,7 @@ def get_model():
     )
 
 def main():
-    # os.environ['HF_HOME'] = HF_HOME
-
     hf_login()
-
-    # download_model() # 初回のみ
 
     tokenizer = get_tokenizer()
     model = get_model()
